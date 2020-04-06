@@ -83,17 +83,17 @@ L<File::Find::Rule>.
 
 =over
 
-=item L<File::Find::Rule>
+=item L<CAD::AutoCAD::Detect>
 
-Alternative interface to File::Find.
+Detect AutoCAD files through magic string.
 
 =item L<CAD::AutoCAD::Version>
 
 Class which work with AutoCAD versions.
 
-=item L<CAD::AutoCAD::Detect>
+=item L<File::Find::Rule>
 
-Detect AutoCAD files through magic string.
+Alternative interface to File::Find.
 
 =back
 
