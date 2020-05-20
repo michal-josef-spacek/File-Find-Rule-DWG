@@ -17,7 +17,7 @@ license 'bsd';
 name 'File-Find-Rule-DWG';
 readme_from 'DWG.pm';
 recursive_author_tests('xt');
-requires 'CAD::AutoCAD::Detect' => 0;
+requires 'CAD::AutoCAD::Detect' => 0.02;
 requires 'File::Find::Rule' => 0;
 requires 'perl' => '5.6.2';
 resources 'bugtracker' => 'https://rt.cpan.org/Public/Dist/Display.html'.

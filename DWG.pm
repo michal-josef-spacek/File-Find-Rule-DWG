@@ -18,6 +18,21 @@ sub File::Find::Rule::dwg {
 	});
 }
 
+# Detect DWG magic.
+sub File::Find::Rule::dwg_magic {
+	my ($file_find_rule, $acad_magic) = @_;
+	my $self = $file_find_rule->_force_object;
+	return $self->file->exec(sub{
+		my $file = shift;
+		my $detected_acad_magic = detect_dwg_file($file);
+		if ($detected_acad_magic && $detected_acad_magic eq $acad_magic) {
+			return 1;
+		} else {
+			return 0;
+		}
+	});
+}
+
 1;
 
 __END__
@@ -36,6 +51,7 @@ File::Find::Rule::DWG - Common rules for searching DWG files.
  use File::Find::Rule::DWG;
 
  my @files = File::Find::Rule->dwg->in($dir);
+ my @files = File::Find::Rule->dwg_magic($acad_magic)->in($dir);
 
 =head1 DESCRIPTION
 
@@ -51,7 +67,13 @@ See L<.dwg on Wikipedia|https://en.wikipedia.org/wiki/.dwg>.
 
 The C<dwg()> rule detect DWG files.
 
-=head1 EXAMPLE
+=head2 C<dwg_magic>
+
+ my @files = File::Find::Rule->dwg_magic($acad_magic)->in($dir);
+
+The C<dwg_magic($acad_magic)> rule detect DWG files for one magic version (e.g. AC1008).
+
+=head1 EXAMPLE1
 
  use strict;
  use warnings;
@@ -73,6 +95,30 @@ The C<dwg()> rule detect DWG files.
 
  # Output like:
  # Usage: qr{[\w\/]+} dir
+
+=head1 EXAMPLE2
+
+ use strict;
+ use warnings;
+
+ use File::Find::Rule;
+ use File::Find::Rule::DWG;
+
+ # Arguments.
+ if (@ARGV < 1) {
+         print STDERR "Usage: $0 dir acad_magic\n";
+         exit 1;
+ }
+ my $dir = $ARGV[0];
+ my $acad_magic = $ARGV[1];
+
+ # Print all DWG files in directory.
+ foreach my $file (File::Find::Rule->dwg_magic($acad_magic)->in($dir)) {
+         print "$file\n";
+ }
+
+ # Output like:
+ # Usage: qr{[\w\/]+} dir acad_magic
 
 =head1 DEPENDENCIES
 
